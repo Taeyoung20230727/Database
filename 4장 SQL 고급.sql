@@ -160,10 +160,20 @@ insert into `member` values ('a112','유관순','010-1234-1012','대리',107,now
 select * from `member`;
 
 #실습 4-7
+select sum(`sale`) as `2018년도 1월 매출총합` from `Sales` where `year`=2018 and `month`=1;
 
 #실습 4-8
+select 
+	sum(`sale`) as `총합`,
+    avg(`sale`) as `평균`
+from `Sales` 
+where `year`=2019 and `month`=2 and `sale` >= 50000;
 
 #실습 4-9
+select 
+	min(`sale`) as `최저`,
+    max(`sale`) as `최고`
+from `Sales` where `year`=2020;
 
 
 #실습 4-10
@@ -232,14 +242,35 @@ select * from `sales` as a inner join `member` as b on a.uid = b.uid;
 select * from `sales` as a left join `member` as b on a.uid = b.uid;
 select * from `sales` as a right join `member` as b on a.uid = b.uid;
 
-
-
-
-
-
-
-
-
 #실습 4-15
+select 
+	`uid`,
+    a.`name`,
+    `pos`,
+    b.`name`
+from `Member` as a
+join `Department` as b
+on a.dep = b.depNo;
+
 #실습 4-16
+select 
+	sum(`sale`) as `2019 매출합`
+from `Sales` as a
+join `Member` as b
+on a.uid = b.uid
+where `name`='김유신' and `year`=2019;
+
 #실습 4-17
+select 
+	b.`name` AS `직원명`,
+   c.`name` AS `부서명`,
+   b.`pos`  AS `직급`,
+   a.`year` AS `년도`,    
+   SUM(`sale`) as `매출합`
+from `Sales`      a
+join `Member`     b on a.uid = b.uid
+join `Department` c on b.dep = c.depNo
+where `year`=2019 and `sale` >= 50000
+group by a.`uid`
+having `매출합` >= 100000
+order by `매출합` DESC;
